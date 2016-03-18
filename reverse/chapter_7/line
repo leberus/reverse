@@ -1,0 +1,32 @@
+ as --gstabs+ scanf_global.s -o scanf_global.o
+
+-dynamic-linker /lib64/ld-linux-x86-64.so.2 /usr/lib/gcc/x86_64-linux-gnu/4.9/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/4.9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.9/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/4.9 -L/usr/lib/gcc/x86_64-linux-gnu/4.9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.9/../../.. -lgcc --as-needed -lgcc_s --no-as-needed -lc scanf_global.o -lgcc --as-needed -lgcc_s --no-as-needed  /usr/lib/gcc/x86_64-linux-gnu/4.9/crtend.o /usr/lib/gcc/x86_64-linux-gnu/4.9/../../../x86_64-linux-gnu/crtn.o
+
+
+{{
+	gcc -v hello_world.c |& grep 'collect2' | tr ' ' '\n'
+	
+	and then pick up the files Matthew mentioned.
+	
+	gcc -v gives you the exact linker command GCC uses.
+	
+	collect2 is the internal executable GCC uses as a linker front-end, which has a similar interface to ld.
+	
+	In Ubuntu 14.04 64-bit (GCC 4.8), I ended up with:
+	
+	ld -dynamic-linker /lib64/ld-linux-x86-64.so.2 \
+	  /usr/lib/x86_64-linux-gnu/crt1.o \
+	  /usr/lib/x86_64-linux-gnu/crti.o \
+	  -lc hello_world.o \
+	  /usr/lib/x86_64-linux-gnu/crtn.o
+	
+	You might also need -lgcc and -lgcc_s. See also: Do I really need libgcc?
+}}
+
+
+http://stackoverflow.com/questions/18091463/why-does-an-assembly-program-only-work-when-linked-with-crt1-o-crti-o-and-crtn-o
+http://stackoverflow.com/questions/3577922/how-to-link-a-gas-assembly-program-that-uses-the-c-standard-library-with-ld-with
+https://gcc.gnu.org/onlinedocs/gcc-4.3.5/gccint/Collect2.html
+http://stackoverflow.com/questions/9414625/do-i-really-need-libgcc
+http://www.x86-64.org/documentation/assembly.html
+http://dbp-consulting.com/tutorials/debugging/basicAsmDebuggingGDB.html

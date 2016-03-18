@@ -1,0 +1,146 @@
+   0x00000000004004d2 <+0>:	push   %rbp
+   0x00000000004004d3 <+1>:	mov    %rsp,%rbp
+   0x00000000004004d6 <+4>:	movl   $0x0,-0x4(%rbp)
+   0x00000000004004dd <+11>:	jmp    0x4004ef <main+29>
+   0x00000000004004df <+13>:	mov    -0x4(%rbp),%eax
+=> 0x00000000004004e2 <+16>:	cltq   
+   0x00000000004004e4 <+18>:	mov    -0x4(%rbp),%edx
+   0x00000000004004e7 <+21>:	mov    %edx,-0x60(%rbp,%rax,4)
+   0x00000000004004eb <+25>:	addl   $0x1,-0x4(%rbp)
+   0x00000000004004ef <+29>:	cmpl   $0x1d,-0x4(%rbp)
+   0x00000000004004f3 <+33>:	jle    0x4004df <main+13>
+   0x00000000004004f5 <+35>:	mov    $0x0,%eax
+   0x00000000004004fa <+40>:	pop    %rbp
+   0x00000000004004fb <+41>:	retq 
+
+
+
+#rax            0x14	20
+
+rbx            0x0	0
+rcx            0x0	0
+rdx            0x13	19
+rsi            0x7fffffffe2f8	140737488347896
+rdi            0x1	1
+rbp            0x7fffffffe210	0x7fffffffe210
+rsp            0x7fffffffe210	0x7fffffffe210
+r8             0x7ffff7dd7c60	140737351875680
+r9             0x7ffff7deade0	140737351953888
+r10            0x7fffffffe0a0	140737488347296
+r11            0x7ffff7a52a50	140737348184656
+r12            0x400360	4195168
+r13            0x7fffffffe2f0	140737488347888
+r14            0x0	0
+r15            0x0	0
+rip            0x4004e2	0x4004e2 <main+16>
+eflags         0x293	[ CF AF SF IF ]
+cs             0x33	51
+ss             0x2b	43
+ds             0x0	0
+es             0x0	0
+fs             0x0	0
+gs             0x0	0
+
+
+# p ($rbp-96)+(20*4)
+0x7fffffffe200
+
+
+
+# rax            0x16	22
+(gdb) p ($rbp-96)+(22*4)
+$8 = (void *) 0x7fffffffe208
+(gdb) x 0x7fffffffe208
+0x7fffffffe208:	0x00000016
+
+# rax           0x17    23
+(gdb) p ($rbp-96)+(23*4)
+$16 = (void *) 0x7fffffffe20c
+(gdb) x 0x7fffffffe20c
+0x7fffffffe20c:	0x0000001a
+
+
+# rax            0x18   24
+(gdb) p ($rbp-96)+(24*4)
+$14 = (void *) 0x7fffffffe210
+(gdb) x 0x7fffffffe210
+0x7fffffffe210: 0x00000018           #### ??
+
+
+# rdx            0x19	25
+(gdb) p ($rbp-96)+(25*4)
+$9 = (void *) 0x7fffffffe214
+(gdb) x 0x7fffffffe214
+0x7fffffffe214:	0x00000019
+
+
+# rdx 		 0x1a   26
+(gdb) p ($rbp-96)+(26*4)
+$21 = (void *) 0x7fffffffe218
+(gdb) x 0x7fffffffe218
+0x7fffffffe218:	0x0000001a
+
+
+# rdx		0x1b	27
+(gdb) p ($rbp-96)+(27*4)
+$20 = (void *) 0x7fffffffe21c
+(gdb) x 0x7fffffffe21c
+0x7fffffffe21c:	0x0000001b
+
+
+
+# rax            0x1d	29
+(gdb) p ($rbp-96)+(29*4)
+$22 = (void *) 0x7fffffffe224
+(gdb) x 0x7fffffffe224
+0x7fffffffe224:	0x0000001d
+
+
+
+
+(gdb) x 0x7fffffffe210					# Value stored in %rbp "0x00000018"
+0x7fffffffe210:	0x00000018				
+(gdb)
+
+
+(gdb) i r
+rax            0x0	0
+rbx            0x0	0
+rcx            0x0	0
+rdx            0x1d	29
+rsi            0x7fffffffe2f8	140737488347896
+rdi            0x1	1
+rbp            0x1900000018	0x1900000018		# Value stored in %rbp "0x00000018"
+rsp            0x7fffffffe218	0x7fffffffe218          # Value stored at 0x7fffffffe218 0x0000001a
+r8             0x7ffff7dd7c60	140737351875680
+r9             0x7ffff7deade0	140737351953888
+r10            0x7fffffffe0a0	140737488347296
+r11            0x7ffff7a52a50	140737348184656
+r12            0x400360	4195168
+r13            0x7fffffffe2f0	140737488347888
+r14            0x0	0
+r15            0x0	0
+rip            0x4004fb	0x4004fb <main+41>
+eflags         0x202	[ IF ]
+cs             0x33	51
+ss             0x2b	43
+ds             0x0	0
+es             0x0	0
+fs             0x0	0
+gs             0x0	0
+
+
+
+
+
+(gdb) p ($rbp-96)+(23*4)
+$2 = (void *) 0x7fffffffe20c
+(gdb) x 0x7fffffffe20c
+0x7fffffffe20c:	0x00000017
+
+
+
+
+
+
+

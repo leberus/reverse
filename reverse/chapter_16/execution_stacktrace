@@ -1,0 +1,123 @@
+f:     file format elf64-x86-64
+architecture: i386:x86-64, flags 0x00000112:
+EXEC_P, HAS_SYMS, D_PAGED
+start address 0x0000000000400360
+
+
+f:     file format elf64-x86-64
+DYNAMIC RELOCATION RECORDS
+OFFSET           TYPE              VALUE 
+0000000000600800 R_X86_64_GLOB_DAT  __gmon_start__
+0000000000600820 R_X86_64_JUMP_SLOT  __libc_start_main
+0000000000600828 R_X86_64_JUMP_SLOT  __gmon_start__
+
+
+
+
+0000000000400360 <_start>:								<- start address
+  400360:       31 ed                   xor    %ebp,%ebp
+  400362:       49 89 d1                mov    %rdx,%r9					<- rtld_fini
+  400365:       5e                      pop    %rsi					<- get argc
+  400366:       48 89 e2                mov    %rsp,%rdx				<- get argv
+  400369:       48 83 e4 f0             and    $0xfffffffffffffff0,%rsp
+  40036d:       50                      push   %rax
+  40036e:       54                      push   %rsp					<- stack_end
+  40036f:       49 c7 c0 d0 04 40 00    mov    $0x4004d0,%r8				<- __libc_csu_fini
+  400376:       48 c7 c1 60 04 40 00    mov    $0x400460,%rcx				<- __libc_csu_init
+  40037d:       48 c7 c7 df 04 40 00    mov    $0x4004df,%rdi				<- main
+  400384:       e8 b7 ff ff ff          callq  400340 <__libc_start_main@plt>		<- __libc_start_main@plt
+  400389:       f4                      hlt    
+  40038a:       66 0f 1f 44 00 00       nopw   0x0(%rax,%rax,1)
+
+
+STATIC int
+LIBC_START_MAIN (int (*main) (int, char **, char ** MAIN_AUXVEC_DECL),			<-  mov    $0x4004df,%rdi  (main)
+                 int argc, char **argv,							
+#ifdef LIBC_START_MAIN_AUXVEC_ARG
+                 ElfW(auxv_t) *auxvec,
+#endif
+                 __typeof (main) init,							<-  mov    $0x400460,%rcx (__libc_csu_init)
+                 void (*fini) (void),							<-  mov    $0x4004d0,%r8  (__libc_csu_fini)
+                 void (*rtld_fini) (void), void *stack_end)
+
+result = main (argc, argv, __environ MAIN_AUXVEC_PARAM);
+
+
+
+0000000000400340 <__libc_start_main@plt>:
+  400340:       ff 25 da 04 20 00       jmpq   *0x2004da(%rip)        # 600820 <_GLOBAL_OFFSET_TABLE_+0x18>     <- __libc_start_main
+  400346:       68 00 00 00 00          pushq  $0x0
+  40034b:       e9 e0 ff ff ff          jmpq   400330 <_init+0x20>                                              <- __libc_start_main@plt-0x10
+
+
+0000000000400330 <__libc_start_main@plt-0x10>:
+  400330:       ff 35 da 04 20 00       pushq  0x2004da(%rip)        # 600810 <_GLOBAL_OFFSET_TABLE_+0x8>
+  400336:       ff 25 dc 04 20 00       jmpq   *0x2004dc(%rip)        # 600818 <_GLOBAL_OFFSET_TABLE_+0x10>
+  40033c:       0f 1f 40 00             nopl   0x0(%rax)
+
+
+
+0000000000400460 <__libc_csu_init>:
+  400460:       41 57                   push   %r15
+  400462:       41 89 ff                mov    %edi,%r15d
+  400465:       41 56                   push   %r14
+  400467:       49 89 f6                mov    %rsi,%r14
+  40046a:       41 55                   push   %r13
+  40046c:       49 89 d5                mov    %rdx,%r13
+  40046f:       41 54                   push   %r12
+  400471:       4c 8d 25 a0 01 20 00    lea    0x2001a0(%rip),%r12        # 600618 <__frame_dummy_init_array_entry>
+  400478:       55                      push   %rbp
+  400479:       48 8d 2d a0 01 20 00    lea    0x2001a0(%rip),%rbp        # 600620 <__init_array_end>
+  400480:       53                      push   %rbx
+  400481:       4c 29 e5                sub    %r12,%rbp
+  400484:       31 db                   xor    %ebx,%ebx
+  400486:       48 c1 fd 03             sar    $0x3,%rbp
+  40048a:       48 83 ec 08             sub    $0x8,%rsp
+  40048e:       e8 7d fe ff ff          callq  400310 <_init>
+  400493:       48 85 ed                test   %rbp,%rbp
+  400496:       74 1e                   je     4004b6 <__libc_csu_init+0x56>
+  400498:       0f 1f 84 00 00 00 00    nopl   0x0(%rax,%rax,1)
+  40049f:       00 
+  4004a0:       4c 89 ea                mov    %r13,%rdx
+  4004a3:       4c 89 f6                mov    %r14,%rsi
+  4004a6:       44 89 ff                mov    %r15d,%edi
+  4004a9:       41 ff 14 dc             callq  *(%r12,%rbx,8)
+  4004ad:       48 83 c3 01             add    $0x1,%rbx
+  4004b1:       48 39 eb                cmp    %rbp,%rbx
+  4004b4:       75 ea                   jne    4004a0 <__libc_csu_init+0x40>
+  4004b6:       48 83 c4 08             add    $0x8,%rsp
+  4004ba:       5b                      pop    %rbx
+  4004bb:       5d                      pop    %rbp
+  4004bc:       41 5c                   pop    %r12
+  4004be:       41 5d                   pop    %r13
+  4004c0:       41 5e                   pop    %r14
+  4004c2:       41 5f                   pop    %r15
+  4004c4:       c3                      retq   
+  4004c5:       66 66 2e 0f 1f 84 00    data16 nopw %cs:0x0(%rax,%rax,1)
+  4004cc:       00 00 00 00
+
+00000000004004d0 <__libc_csu_fini>:
+  4004d0:       f3 c3                   repz retq
+
+
+00000000004004df <main>:
+  4004df:       55                      push   %rbp
+  4004e0:       48 89 e5                mov    %rsp,%rbp
+  4004e3:       e8 ea ff ff ff          callq  4004d2 <f>
+  4004e8:       b8 00 00 00 00          mov    $0x0,%eax
+  4004ed:       5d                      pop    %rbp
+  4004ee:       c3                      retq
+
+
+
+
+
+Links:
+
+http://www.tldp.org/LDP/LG/issue84/hawk.html
+http://stackoverflow.com/questions/5469274/what-does-plt-mean-here/5469334#5469334
+http://dustin.schultz.io/blog/2010/10/02/how-is-glibc-loaded-at-runtime/
+
+
+objdump --disassemble f
+objdumd -R f

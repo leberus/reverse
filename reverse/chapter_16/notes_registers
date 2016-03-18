@@ -1,0 +1,11 @@
+rsp:  top of the stack
+
+[main]		+top of memory addr
+[myfunction()]
+[foo()]		<- rsp (top of the stack)
+...
+...
+...
+[heap]
+[data]
+[text]          + 0

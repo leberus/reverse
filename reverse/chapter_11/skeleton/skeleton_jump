@@ -1,0 +1,11 @@
+CMP register, register/value
+Jcc true ; cc=condition code
+false:
+... some code to be executed if comparison result is false ...
+JMP exit
+true:
+... some code to be executed if comparison result is true ...
+exit:
+
+If the body of a condition statement is very short, the conditional move instruction can be used: MOVcc in ARM (in ARM
+mode), CSEL in ARM64, CMOVcc in x86.

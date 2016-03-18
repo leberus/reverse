@@ -1,0 +1,1 @@
+- Si la funcion main es void, el registro eax tendra el valor de la ultima funcion, en este caso 15

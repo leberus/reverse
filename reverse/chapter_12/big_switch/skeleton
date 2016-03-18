@@ -1,0 +1,35 @@
+MOV REG, input
+CMP REG, 4 ; maximal number of cases
+JA default
+SHL REG, 2 ; find element in table. shift for 3 bits in x64.
+MOV REG, jump_table[REG]
+JMP REG
+case1:
+; do something
+JMP exit
+case2:
+; do something
+JMP exit
+case3:
+; do something
+JMP exit
+case4:
+; do something
+JMP exit
+case5:
+; do something
+JMP exit
+default:
+...
+exit:
+....
+jump_table dd case1
+dd case2
+dd case3
+dd case4
+dd case5
+
+
+The jump to the address in the jump table may also be implemented using this instruction:
+JMP jump_table[REG*4]. Or JMP jump_table[REG*8] in x64.
+A jumptable is just array of pointers, like the one described later.

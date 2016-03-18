@@ -1,0 +1,17 @@
+The observant reader may ask why are 8 bytes allocated for int values, when 4 is enough?  Yes, one has to remember: 
+8 bytes are allocated for any data type shorter than 64 bits. This is established for the convenience’s sake: it makes it easy to calculate the address of arbitrary argument.  Besides, they are all located at aligned memory addresses.  Itis the same in the 32-bit environments: 4 bytes are reserved for all data types
+
+
+== radare2 ==
+
+- radare2 -w [binary]
+	# aa
+	# pdf @ [sym.function]
+	# s [mem addr]
+	# pd [next instructions]
+	# wx [opcode][@offset]
+	
+
+== Assembly instructions code ==
+
+http://faydoc.tripod.com/cpu/nop.htm

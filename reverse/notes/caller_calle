@@ -1,0 +1,2 @@
+caller: function which calls another function
+callee: function which is being called

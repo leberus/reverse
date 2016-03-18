@@ -1,0 +1,210 @@
+[main] 
+
+****- before "push %rbp"-****
+
+rbp            0x0	0x0
+rsp            0x7fffffffe258	0x7fffffffe258					-> rsp points to at saved $rip
+
+										
+
+x 0x7fffffffe258
+0x7fffffffe258:	0xf7a52b45							-> memory of C runtime library
+
+(gdb) i f
+Stack level 0, frame at 0x7fffffffe260:
+ rip = 0x4004df in main (f.s:25); saved rip = 0x7ffff7a52b45
+ source language asm.
+ Arglist at 0x7fffffffe250, args: 
+ Locals at 0x7fffffffe250, Previous frame's sp is 0x7fffffffe260
+ Saved registers:
+  rip at 0x7fffffffe258								-> saved register
+
+										[stack]
+								0x7fffffffe260  [previus frame's sp]
+								0x7fffffffe258	[oldrip -> 0xf7a52b45] <- rsp 
+								0x7fffffffe250  [locals]
+
+
+****- after "push %rbp"-****							-> push $rbp (so, old bytes down from $rsp)
+
+(gdb) i f
+Stack level 0, frame at 0x7fffffffe260:
+ rip = 0x4004e0 in main (f.s:28); saved rip = 0x7ffff7a52b45
+ source language asm.
+ Arglist at 0x7fffffffe250, args: 
+ Locals at 0x7fffffffe250, Previous frame's sp is 0x7fffffffe260
+ Saved registers:
+  rbp at 0x7fffffffe250, rip at 0x7fffffffe258					-> 0x7fffffffe258 - 0x7fffffffe250: 8bytes
+
+
+rbp            0x0	0x0
+rsp            0x7fffffffe250	0x7fffffffe250
+
+										[stack]
+								0x7fffffffe260  [previus frame's sp]
+								0x7fffffffe258  [oldrip -> 0xf7a52b45]
+								0x7fffffffe250  [oldrbp] 	       <- rsp
+
+
+
+****-mov %rsp, %rbp-*****
+
+rbp            0x7fffffffe250	0x7fffffffe250					-> mov value of $rsp to $rbp
+rsp            0x7fffffffe250	0x7fffffffe250
+
+										[stack]
+                                                                0x7fffffffe260  [previus frame's sp]
+                                                                0x7fffffffe258  [oldrip -> 0xf7a52b45] 
+                                                                0x7fffffffe250  [oldrbp]               <- rsp and rbp
+
+
+[f()]
+
+****- before "push %rbp"-****
+Stack level 0, frame at 0x7fffffffe250:
+ rip = 0x4004d2 in f (f.s:8); saved rip = 0x4004e8
+ called by frame at 0x7fffffffe260
+ source language asm.
+ Arglist at 0x7fffffffe240, args:
+ Locals at 0x7fffffffe240, Previous frame's sp is 0x7fffffffe250
+ Saved registers:
+  rip at 0x7fffffffe248                                                         -> rip was pushed(that's the return address where we'll go when we get off f()
+
+rbp            0x7fffffffe250	0x7fffffffe250					
+rsp            0x7fffffffe248	0x7fffffffe248					-> rsp is 8 bytes lower than before, because oldrip was pushed into the stack
+
+
+(gdb) x 0x7fffffffe248
+0x7fffffffe248:	0x004004e8							-> points to 0x00000000004004e8 <+9>:	mov    $0x0,%eax, where old rip was pointing so:
+
+										[stack]
+                                                                0x7fffffffe260  [previus frame's sp]
+                                                                0x7fffffffe258  [oldrip -> 0xf7a52b45]
+                                                                0x7fffffffe250  [oldrbp]               	<- rbp
+										[newframe] 		<- called by frame at 0x7fffffffe260
+								0x7fffffffe248  [oldrip]		<- rsp (oldrip points to 0x004004e8)
+										
+
+
+
+
+****- after "push %rbp"-****
+Stack level 0, frame at 0x7fffffffe250:
+ rip = 0x4004d3 in f (f.s:11); saved rip = 0x4004e8
+ called by frame at 0x7fffffffe260
+ source language asm.
+ Arglist at 0x7fffffffe240, args:
+ Locals at 0x7fffffffe240, Previous frame's sp is 0x7fffffffe250
+ Saved registers:
+  rbp at 0x7fffffffe240, rip at 0x7fffffffe248
+
+rbp            0x7fffffffe250	0x7fffffffe250
+rsp            0x7fffffffe240	0x7fffffffe240					-> push $rbp into the stack (8 bytes lower)
+
+										[stack]
+                                                                0x7fffffffe260  [previus frame's sp]
+                                                                0x7fffffffe258  [oldrip -> 0xf7a52b45]
+                                                                0x7fffffffe250  [oldrbp]                <- rbp
+                                                                                [newframe]              <- called by frame at 0x7fffffffe260
+                                                                0x7fffffffe248  [oldrip]                <- oldrip points to 0x004004e8
+								0x7fffffffe240  [oldrbp]		<- rsp
+							
+
+
+
+****-mov %rsp, %rbp-*****
+rbp            0x7fffffffe240	0x7fffffffe240
+rsp            0x7fffffffe240	0x7fffffffe240
+
+(gdb) x 0x7fffffffe240
+0x7fffffffe240: 0xffffe250   -> previous frame's sp
+
+										[stack]
+                                                                0x7fffffffe260  [previus frame's sp]
+                                                                0x7fffffffe258  [oldrip -> 0xf7a52b45]
+                                                                0x7fffffffe250  [oldrbp revious frame's sp]                
+                                                                                [newframe]              	<- called by frame at 0x7fffffffe260
+                                                                0x7fffffffe248  [oldrip]                	<- oldrip points to 0x004004e8
+                                                                0x7fffffffe240  [oldrbp 0xffffe250]		<- rsp and rbp
+
+
+
+****-pop %rbp -****
+(gdb) i f
+Stack level 0, frame at 0x7fffffffe248:
+ rip = 0x4004de in f (f.s:16); saved rip = 0x4004e8
+ called by frame at 0x7fffffffe260
+ source language asm.
+ Arglist at 0x7fffffffe250, args:
+ Locals at 0x7fffffffe250, Previous frame's sp is 0x7fffffffe250
+ Saved registers:
+  rip at 0x7fffffffe248
+
+rbp            0x7fffffffe250	0x7fffffffe250
+rsp            0x7fffffffe248	0x7fffffffe248
+
+ x 0x7fffffffe248
+0x7fffffffe248: 0x004004e8
+										[stack]
+                                                                0x7fffffffe260  [previus frame's sp]
+                                                                0x7fffffffe258  [oldrip -> 0xf7a52b45]
+                                                                0x7fffffffe250  [oldrbp revious frame's sp]	<- rbp
+                                                                                [newframe]              	<- called by frame at 0x7fffffffe260
+                                                                0x7fffffffe248  [oldrip]                	<- rsp (oldrip points to 0x004004e8)
+
+
+
+
+[ret from f()]
+(gdb) i f
+Stack level 0, frame at 0x7fffffffe260:
+ rip = 0x4004e8 in main (f.s:31); saved rip = 0x7ffff7a52b45
+ source language asm.
+ Arglist at 0x7fffffffe250, args:
+ Locals at 0x7fffffffe250, Previous frame's sp is 0x7fffffffe260
+ Saved registers:
+  rbp at 0x7fffffffe250, rip at 0x7fffffffe258
+
+rbp            0x7fffffffe250	0x7fffffffe250
+rsp            0x7fffffffe250	0x7fffffffe250
+										[stack]
+                                                                0x7fffffffe260  [previus frame's sp]
+                                                                0x7fffffffe258  [oldrip -> 0xf7a52b45]
+                                                                0x7fffffffe250  [oldrbp revious frame's sp]     <- rsp and rbp
+
+
+****-pop %rbp-****
+(gdb) i f
+Stack level 0, frame at 0x7fffffffe258:
+ rip = 0x4004ee in main (f.s:34); saved rip = 0x7ffff7a52b45
+ source language asm.
+ Arglist at unknown address.
+ Locals at unknown address, Previous frame's sp is 0x7fffffffe260
+ Saved registers:
+  rip at 0x7fffffffe258
+
+rbp            0x0	0x0
+rsp            0x7fffffffe258	0x7fffffffe258
+						
+										[stack]
+                                                                0x7fffffffe260  [previus frame's sp]
+                                                                0x7fffffffe258  [oldrip -> 0xf7a52b45]		<- rsp
+
+
+
+
+****- ret -*****
+(gdb) i f
+Stack level 0, frame at 0x7fffffffe320:
+ rip = 0x7ffff7a52b45 in __libc_start_main (libc-start.c:321); saved rip = 0x400389
+ called by frame at 0x0
+ source language c.
+ Arglist at 0x7fffffffe258, args: main=0x4004df <main>, argc=1, argv=0x7fffffffe338, init=<optimized out>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffe328
+ Locals at 0x7fffffffe258, Previous frame's sp is 0x7fffffffe320
+ Saved registers:
+  rbx at 0x7fffffffe2f0, rbp at 0x7fffffffe2f8, r12 at 0x7fffffffe300, r13 at 0x7fffffffe308, r14 at 0x7fffffffe310, rip at 0x7fffffffe318
+
+rsp            0x7fffffffe260	0x7fffffffe260
+
+								[stack]
+                                                                0x7fffffffe260  [previus frame's sp]		<- rsp

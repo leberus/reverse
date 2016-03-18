@@ -1,0 +1,12 @@
+== Execution backtrace ==
+	- http://www.tldp.org/LDP/LG/issue84/hawk.html
+	- http://bottomupcs.sourceforge.net/csbu/x3564.htm
+	- https://lizardo.wordpress.com/2008/05/31/setting-up-libc6-sources-for-analysis-on-debianubuntu/
+	- http://stackoverflow.com/questions/16970281/whats-going-on-in-libc-start-main
+	- Mirar estructuras kernel
+	
+
+== Branch Prediction ==
+	- http://repzret.org/p/repzret/
+	- https://docs.oracle.com/cd/E19455-01/806-3773/instructionset-64/index.html
+	- https://es.wikipedia.org/wiki/Predictor_de_saltos

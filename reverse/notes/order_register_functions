@@ -1,0 +1,13 @@
+	movl	$5, %r9d
+	movl	$4, %r8d
+	movl	$3, %ecx
+	movl	$2, %edx
+	movl	$1, %esi
+	movl	$.LC0, %edi
+
+1arg -> edi
+2arg -> esi
+3arg -> edx
+4arg -> ecx
+5arg -> r8d
+6arg -> r9d

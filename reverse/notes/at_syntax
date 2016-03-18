@@ -1,0 +1,20 @@
+-0x80(%rbp,%rax,4) = (%rbp + %rax * 4 + (-0x80))
+
+
+-96(%rbp,%rax,4) = (rbp - 96 + (rax * 4))
+
+	rbp: 196
+
+	100 + (0) = 0
+	100 + (4) = 1
+	100 
+
+
+movl    -4(%ebp, %edx, 4), %eax  # Full example: load *(ebp - 4 + (edx * 4)) into eax
+movl    -4(%ebp), %eax           # Typical example: load a stack variable into eax
+movl    (%ecx), %edx             # No offset: copy the target of a pointer into a register
+leal    8(,%eax,4), %eax         # Arithmetic: multiply eax by 4 and add 8
+leal    (%eax,%eax,2), %eax      # Arithmetic: multiply eax by 2 and add eax (i.e. multiply by 3)
+
+
+https://en.wikibooks.org/wiki/X86_Assembly/GAS_Syntax

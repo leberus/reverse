@@ -1,0 +1,35 @@
+/ (fcn) sym.f_unsigned 22
+|           ; var int local_4h     @ rbp-0x4
+|           ; var int local_8h     @ rbp-0x8
+|           ; CALL XREF from 0x004005af (sym.f_unsigned)
+|           0x0040054c      55             push rbp
+|           0x0040054d      4889e5         mov rbp, rsp
+|           0x00400550      4883ec10       sub rsp, 0x10
+|           0x00400554      897dfc         mov dword [rbp - local_4h], edi
+|           0x00400557      8975f8         mov dword [rbp - local_8h], esi
+|           0x0040055a      8b45fc         mov eax, dword [rbp - local_4h]
+|           0x0040055d      3b45f8         cmp eax, dword [rbp - local_8h]
+\       ,=< 0x00400560      eb0a           jmp loc.0040056c
+        |   0x00400562      bf44064000     mov edi, 0x400644
+        |   0x00400567      e874feffff     call sym.imp.puts
+|- loc.0040056c 38
+|       |   ; var int local_4h     @ rbp-0x4
+|       |   ; var int local_8h     @ rbp-0x8
+|       |   ; JMP XREF from 0x00400560 (loc.0040056c)
+|       |   ; JMP XREF from 0x00400572 (loc.0040056c)
+|       |   ; JMP XREF from 0x00400584 (loc.0040056c)
+|       `-> 0x0040056c      8b45fc         mov eax, dword [rbp - local_4h]
+|           0x0040056f      3b45f8         cmp eax, dword [rbp - local_8h]
+|       ,=< 0x00400572      eb00           jmp 0x400574               
+|       |   ; JMP XREF from 0x00400572 (loc.0040056c)
+|       `-> 0x00400574      bf48064000     mov edi, str.a__b           ; "a==b" @ 0x400648
+|           0x00400579      e862feffff     call sym.imp.puts
+|           0x0040057e      8b45fc         mov eax, dword [rbp - local_4h]
+|           0x00400581      3b45f8         cmp eax, dword [rbp - local_8h]
+|       ,=< 0x00400584      eb0a           jmp 0x400590               
+|       |   0x00400586      bf4d064000     mov edi, 0x40064d
+|       |   0x0040058b      e850feffff     call sym.imp.puts
+|       |   ; JMP XREF from 0x00400584 (loc.0040056c)
+|       `-> 0x00400590      c9             leave
+\           0x00400591      c3             ret
+
